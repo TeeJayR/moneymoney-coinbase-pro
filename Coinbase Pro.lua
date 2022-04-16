@@ -66,6 +66,7 @@ function RefreshAccount (account, since)
         local products = queryCoinbaseProApi("products")
         for key, value in pairs(balances) do
                 local balanceCurrency = value["currency"]
+                local balanceAvailable = tonumber(value["available"]) > 0
                 local securityCurrency = nil
                 local price = nil
                 local amount = nil
@@ -81,7 +82,7 @@ function RefreshAccount (account, since)
                         }
                 else
                         local product_id = balanceCurrency .. '-' .. nativeCurrency
-                        if productsExistsAndOnline(product_id, products) then
+                        if productsExistsAndOnline(product_id, products) and (balanceAvailable == true) then
                                 s[#s+1] = {
                                         name = value["currency"],
                                         market = market,
